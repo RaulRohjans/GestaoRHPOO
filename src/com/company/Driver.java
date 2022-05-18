@@ -1,18 +1,20 @@
 package com.company;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Driver extends Employee{
     //Fields
     private double distanceKms;
-    private double pricePerKm;
+    private Map<String, String> pricePerKm;
 
     //Constructors
-    public Driver(int id, String name, Date entranceDate, double hourlyPay, double pricePerKm) {
+    public Driver(int id, String name, Date entranceDate, double hourlyPay) {
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.DRIVER);
         this.distanceKms = 0;
-        this.pricePerKm = pricePerKm;
+        this.pricePerKm = new HashMap<String, String>();
     }
 
     //Getters and Setters
@@ -24,11 +26,11 @@ public class Driver extends Employee{
         this.distanceKms = distanceKms;
     }
 
-    public double getPricePerKm() {
+    public Map<String, String> getPricePerKm() {
         return pricePerKm;
     }
 
-    public void setPricePerKm(double pricePerKm) {
+    public void setPricePerKm(Map<String, String> pricePerKm) {
         this.pricePerKm = pricePerKm;
     }
 }

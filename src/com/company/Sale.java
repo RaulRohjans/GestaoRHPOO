@@ -1,6 +1,5 @@
 package com.company;
 
-import java.lang.annotation.Inherited;
 import java.util.Date;
 
 public class Sale {

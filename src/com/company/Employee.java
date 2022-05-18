@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Employee {
@@ -7,7 +8,7 @@ public class Employee {
     private int id;
     private String name;
     private Date entranceDate;
-    private int workedDays;
+    private ArrayList<Integer> workedDays;
     private double hourlyPay;
     public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN};
     private EmployeeType type;
@@ -19,7 +20,7 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.entranceDate = entranceDate;
-        this.workedDays = 0;
+        this.workedDays = new ArrayList<Integer>();
         this.type = EmployeeType.NORMAL;
         if(hourlyPay <= 0)
             throw new IllegalArgumentException("Invalid value for hourlyPay.");
@@ -27,17 +28,17 @@ public class Employee {
     }
 
     //Methods
-    public double getBasePay() {
+    /*public double getBasePay() {
         return workedDays * (hourlyPay * 8);
-    }
+    }*/
 
-    public double getExtraPay() {
+    /*public double getExtraPay() {
         return workedDays * DAILY_FOOD_SUBSIDY;
-    }
+    }*/
 
-    public double getFullPay() {
+    /*public double getFullPay() {
         return getBasePay() + getExtraPay();
-    }
+    }*/
 
     //Getters and Setters
     public int getId() {
@@ -64,11 +65,11 @@ public class Employee {
         this.entranceDate = entranceDate;
     }
 
-    public int getWorkedDays() {
+    public ArrayList<Integer> getWorkedDays() {
         return workedDays;
     }
 
-    public void setWorkedDays(int workedDays) {
+    public void setWorkedDays(ArrayList<Integer> workedDays) {
         this.workedDays = workedDays;
     }
 
