@@ -11,6 +11,15 @@ public class Manager extends Employee{
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.MANAGER);
     }
-
-    //Getters and Setters
+    
+   /* //Method
+    public void salary(){
+        return getBasePay + AWARD;
+    }*/
+    
+    //Getter
+    public static double getAWARD() {
+        return AWARD;
+    }
+    
 }

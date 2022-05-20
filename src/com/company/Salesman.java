@@ -4,18 +4,20 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Salesman extends Employee{
     //Fields
     private ArrayList<Sale> sales;
-    private double awardPercent;
+    private Map <Double, Double> awardPercent;
 
     //Constructors
     public Salesman(int id, String name, Date entranceDate, double hourlyPay, double awardPercent) {
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.SALESMAN);
         sales = new ArrayList<Sale>();
-        this.awardPercent = awardPercent;
+        this.awardPercent = new HashMap <Double, Double>();
     }
 
     //Methods
@@ -84,13 +86,20 @@ public class Salesman extends Employee{
         System.out.println("All sales with the ID " + id + " where removed.");
     }
 
+    public ArrayList<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(ArrayList<Sale> sales) {
+        this.sales = sales;
+    }
 
     //Getters and Setters
-    public double getAwardPercent() {
+    public Map<Double, Double> getAwardPercent() {
         return awardPercent;
     }
 
-    public void setAwardPercent(double awardPercent) {
+    public void setAwardPercent(Map<Double, Double> awardPercent) {
         this.awardPercent = awardPercent;
     }
 }
