@@ -9,7 +9,7 @@ public class Methods {
 
         System.out.println("*-*-*-*-*-*-*-*-*-*-*Gestão*RH-*-*-*-*-*-*-*-*-*-*-*");
         System.out.println("1. Insert New Employee");
-        System.out.println("2. Check for  Employee");
+        System.out.println("2. Check for Employee");
         System.out.println("3. Get Employee Record");
         System.out.println("4. Import Employee List");
         System.out.println("5. Get Employee Number per Category");
@@ -21,7 +21,7 @@ public class Methods {
         System.out.println("\n0. Leave App");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 
-        System.out.print("\nOpção:");
+        System.out.print("\nOpção: ");
         Scanner scnr = new Scanner(System.in);
 
         System.out.flush();
@@ -33,5 +33,24 @@ public class Methods {
         System.out.println("Press enter to continue!");
         Scanner scnr = new Scanner(System.in);
         scnr.nextLine();
+    }
+
+    /* This method returns the category ID and not the number the person choose! */
+    public static int CategoryMenu() {
+        System.out.flush();
+
+        System.out.println("*-*-*-*-*-*-*-*-*-*-*Gestão*RH-*-*-*-*-*-*-*-*-*-*-*");
+        System.out.println("1. NORMAL");
+        System.out.println("2. MANAGER");
+        System.out.println("3. DRIVER");
+        System.out.println("4. SALESMAN");
+        System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
+
+        System.out.print("\nOpção: ");
+        Scanner scnr = new Scanner(System.in);
+
+        System.out.flush();
+
+        try{ return Integer.parseInt(scnr.nextLine()) -1; } catch (Exception e) {return -1;}
     }
 }
