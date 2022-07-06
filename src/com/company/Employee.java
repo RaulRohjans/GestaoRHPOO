@@ -1,14 +1,15 @@
 package com.company;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Employee {
     //Fields
     private int id;
     private String name;
     private Date entranceDate;
-    private ArrayList<Integer> workedDays;
+    private HashMap<String, Integer> workedDays;
     private double hourlyPay;
     public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN};
     private EmployeeType type;
@@ -20,14 +21,32 @@ public class Employee {
         this.id = id;
         this.name = name;
         this.entranceDate = entranceDate;
-        this.workedDays = new ArrayList<Integer>();
+        this.workedDays = new HashMap<String, Integer>();
         this.type = EmployeeType.NORMAL;
         if(hourlyPay <= 0)
             throw new IllegalArgumentException("Invalid value for hourlyPay.");
         this.hourlyPay = hourlyPay;
     }
 
+    public Employee() {
+        this.id = -1;
+        this.name = "";
+        this.entranceDate = null;
+        this.workedDays = new HashMap<String, Integer>();
+        this.type = EmployeeType.NORMAL;
+        this.hourlyPay = 0;
+    }
+
     //Methods
+    public void addWorkedDays(String d, int days){
+        workedDays.put(d, days);
+    }
+
+    public void addWorkedDays(int days){
+        Calendar calendar = Calendar.getInstance();
+        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH)), days);
+    }
+
     /*public double getBasePay() {
         return workedDays * (hourlyPay * 8);
     }*/
@@ -65,11 +84,15 @@ public class Employee {
         this.entranceDate = entranceDate;
     }
 
-    public ArrayList<Integer> getWorkedDays() {
+    public void setEntranceDate(String entranceDate) throws ParseException {
+        this.entranceDate = new SimpleDateFormat("yyyy-MM-dd").parse(entranceDate);
+    }
+
+    public HashMap<String, Integer> getWorkedDays() {
         return workedDays;
     }
 
-    public void setWorkedDays(ArrayList<Integer> workedDays) {
+    public void setWorkedDays(HashMap<String, Integer> workedDays) {
         this.workedDays = workedDays;
     }
 

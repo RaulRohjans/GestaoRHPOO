@@ -32,6 +32,20 @@ public class Company {
         return null;
     }
 
+    public void deleteEmployees(){
+        employees = new ArrayList<Employee>();
+    }
+
+    public int employeeCountPerCategory(Employee.EmployeeType e){
+        int cnt = 0;
+        for(Employee emp : employees){
+            if(emp.getType() == e){
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+
     /* Getters and Setters*/
     public ArrayList<Employee> Employees() {
         return employees;

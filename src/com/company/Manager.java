@@ -11,6 +11,11 @@ public class Manager extends Employee{
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.MANAGER);
     }
+
+    public Manager() {
+        super();
+        setType(EmployeeType.MANAGER);
+    }
     
    ///Method
     /*public void salary(){

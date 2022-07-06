@@ -20,6 +20,13 @@ public class Salesman extends Employee{
         this.awardPercent = new HashMap <Double, Double>();
     }
 
+    public Salesman() {
+        super();
+        setType(EmployeeType.SALESMAN);
+        sales = new ArrayList<Sale>();
+        this.awardPercent = new HashMap <Double, Double>();
+    }
+
     //Methods
     public void addSale(Sale sale) {
         if(sale == null){

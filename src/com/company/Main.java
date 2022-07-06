@@ -1,8 +1,18 @@
 package com.company;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.Locale;
 import java.util.Scanner;
+
+import org.apache.commons.io.IOUtils;
+import org.json.*;
 
 public class Main {
 
@@ -51,39 +61,86 @@ public class Main {
 
                     Methods.AwaitInput();
                     break;
+
                 case 3: //Get Employee Record
                     System.out.println("Test 3");
                     break;
+
                 case 4: //Import Employee List
-                    System.out.println("Test 4");
+                    System.out.print("Importing files will delete all current data.\n" +
+                            "Do you wish to proceed? (y/n) ");
+
+                    if(!scanner.nextLine().toUpperCase(Locale.ROOT).equals("Y")){
+                        System.out.println("Action canceled.");
+                        Methods.AwaitInput();
+                    }
+
+                    //Read File path
+                    System.out.print("File Path: ");
+                    File f;
+                    String path = scanner.nextLine();
+
+                    if(path.isEmpty()){
+                        System.out.println("Invalid file path!");
+                        Methods.AwaitInput();
+                        break;
+                    }
+
+                    f = new File(path);
+                    if(!f.exists()){
+                        System.out.println("File does not exist");
+                        Methods.AwaitInput();
+                        break;
+                    }
+
+                    //Read file
+                    JSONObject obj = null;
+                    try{
+                        InputStream is = new FileInputStream(path);
+                        String jsonTxt = IOUtils.toString(is, StandardCharsets.ISO_8859_1);
+                        obj = new JSONObject(jsonTxt);
+                    }
+                    catch (IOException e){
+                        System.out.println("File does not exist");
+                        Methods.AwaitInput();
+                        break;
+                    }
+
+                    //Insert Employees
+                    try{
+                        JSONArray employees = obj.getJSONArray("employees");
+                        company.deleteEmployees();
+                        for(int i = 0; i < employees.length(); i++ ){
+                            Employee employee = Methods.GetEmployeeFromJSON(employees.getJSONObject(i));
+                            company.addEmployee(employee);
+                        }
+                    }
+                    catch (ParseException | NumberFormatException e){
+                        System.out.println(e.getMessage());
+                        Methods.AwaitInput();
+                        break;
+                    }
+                    catch (Exception e){
+                        System.out.println("The following unknown error has occurred: \n" + e.getMessage());
+                        Methods.AwaitInput();
+                        break;
+                    }
+
+
+                    Methods.AwaitInput();
                     break;
                 case 5: { //Get Employee Number per Category
-                    int category = Methods.CategoryMenu();
+                    Employee.EmployeeType category = Methods.CategoryMenu();
 
-                    if(category < 0 || category > 3){
+                    if(category == null){
                         System.out.println("Invalid Category!");
                         Methods.AwaitInput();
                         break;
                     }
 
-                    /*switch (category){
-                        case 0: //NORMAL
-
-                            break;
-
-                        case 1: //MANAGER
-
-                            break;
-
-                        case 2: //DRIVER
-
-                            break;
-
-                        case 3: //SALESMAN
-
-                            break;
-                    }*/
-
+                    System.out.println("There are " + company.employeeCountPerCategory(category) +
+                            " employees in that category!");
+                    Methods.AwaitInput();
                     break;
                 }
                 case 6: //Get all Employees
@@ -101,12 +158,15 @@ public class Main {
                 case 10: //Export User List
                     /* File Structure
                     {
-                        Employees : [
+                        employees : [
                             {
                                 id: 1,
                                 name: Raul,
                                 entranceDate: 2022-08-12,
-                                workedDays: 19,
+                                "workedDays": {
+                                    "2022-02": 58,
+                                    "2022-03": 59
+                                },
                                 hourlyPay: 5.5,
                                 type: 0
                             },
@@ -114,27 +174,29 @@ public class Main {
                                 id: 2,
                                 name: Fran,
                                 entranceDate: 2022-02-12,
-                                workedDays: 293,
+                                "workedDays": {
+                                    "2022-02": 58,
+                                    "2022-03": 59
+                                },
                                 hourlyPay: 7.5,
                                 type: 3,
                                 awardPercent: {
                                     2021: 0.25,
                                     2022: 0.5
                                 },
-                                sales: [1, 2, 4]
+                                sales: [
+                                    {
+                                        id: 1,
+                                        total: 59.9,
+                                        saleDate: 2021-08-09
+                                    },
+                                    {
+                                        id: 2,
+                                        total: 41.9,
+                                        saleDate: 2022-02-15
+                                    }
+                                ]
                             }
-                        ],
-                        sales: [
-                            {
-                                id: 1,
-                                total: 59.9,
-                                saleDate: 2021-08-09
-                            },
-                            {
-                                id: 2,
-                                total: 41.9,
-                                saleDate: 2022-02-15
-                            },
                         ]
                     }
                      */

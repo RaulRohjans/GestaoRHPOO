@@ -1,6 +1,10 @@
 package com.company;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Methods {
@@ -35,8 +39,8 @@ public class Methods {
         scnr.nextLine();
     }
 
-    /* This method returns the category ID and not the number the person choose! */
-    public static int CategoryMenu() {
+    /* This method returns the category and not the number the person choose! */
+    public static Employee.EmployeeType CategoryMenu() {
         System.out.flush();
 
         System.out.println("*-*-*-*-*-*-*-*-*-*-*Gestão*RH-*-*-*-*-*-*-*-*-*-*-*");
@@ -51,6 +55,74 @@ public class Methods {
 
         System.out.flush();
 
-        try{ return Integer.parseInt(scnr.nextLine()) -1; } catch (Exception e) {return -1;}
+        try{
+            return switch (Integer.parseInt(scnr.nextLine())) {
+                case 1 -> Employee.EmployeeType.NORMAL;
+                case 2 -> Employee.EmployeeType.MANAGER;
+                case 3 -> Employee.EmployeeType.DRIVER;
+                case 4 -> Employee.EmployeeType.SALESMAN;
+                default -> null;
+            };
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Employee GetEmployeeFromJSON(JSONObject obj) throws ParseException {
+        Employee employee;
+        try{
+            switch (obj.getInt("type")){
+                case 0: { //NORMAL
+                    employee = new Employee();
+                    break;
+                }
+                case 1: { //MANAGER
+                    employee = new Manager();
+                    break;
+                }
+                case 2: //DRIVER
+                    employee = new Driver();
+                    ((Driver) employee).setDistanceKms(obj.getDouble("distanceKms"));
+
+                    //Fetch price per km
+                    JSONObject priceKM = obj.getJSONObject("pricePerKm");
+                    Iterator<String> keys = priceKM.keys();
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        ((Driver) employee).addPricePerKm(Integer.parseInt(key), priceKM.getDouble(key));
+                    }
+                    break;
+
+                case 3: //SALESMAN
+                    employee = new Salesman();
+
+                    break;
+                default:
+                    return null;
+            }
+
+            employee.setId(obj.getInt("id"));
+            employee.setName(obj.getString("name"));
+            employee.setEntranceDate(obj.getString("entranceDate"));
+            employee.setHourlyPay(obj.getDouble("hourlyPay"));
+
+            //Fetch worked days
+            JSONObject workedDays = obj.getJSONObject("workedDays");
+            Iterator<String> keys = workedDays.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                employee.addWorkedDays(key, workedDays.getInt(key));
+            }
+        }
+        catch (ParseException e){
+            throw new ParseException("There has been an error parsing the entrance date of employee " +
+                    obj.getString("name"), e.getErrorOffset());
+        }
+        catch (NumberFormatException e) {
+            throw new NumberFormatException("There has been an error parsing the number of worked days of employee " +
+                    obj.getString("name"));
+        }
+
+        return employee;
     }
 }
