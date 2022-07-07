@@ -25,7 +25,7 @@ public class Methods {
         System.out.println("\n0. Leave App");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 
-        System.out.print("\nOpção: ");
+        System.out.print("\nOption: ");
         Scanner scnr = new Scanner(System.in);
 
         System.out.flush();

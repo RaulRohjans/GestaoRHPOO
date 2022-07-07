@@ -7,7 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="github.anandvarkeyphilips.json.java.ordered" level="application" />
-    <orderEntry type="library" name="antkorwin.ioutils" level="application" />
+    <orderEntry type="library" name="github.anandvarkeyphilips.json.java.ordered" level="project" />
+    <orderEntry type="library" name="antkorwin.ioutils" level="project" />
+    <orderEntry type="library" name="better-strings-0.3" level="project" />
   </component>
 </module>
