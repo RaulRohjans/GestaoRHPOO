@@ -4,15 +4,6 @@ import java.util.ArrayList;
 
 public class Company {
 
-   //field
-    private final ArrayList<Employee> employees;
-    
-    //constructor
-    public Company(){
-        this.employees = new ArrayList<>();
-    } 
-
-
     //fields
     private ArrayList<Employee> employees;
     
@@ -29,8 +20,6 @@ public class Company {
                 return;
             }
         }
-
-        employees.add(employee);
     }
 
     public Employee getEmployee(int id){

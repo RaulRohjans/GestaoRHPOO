@@ -13,6 +13,22 @@
     },
     {
       "id": 2,
+      "name": "Fran2",
+      "entranceDate": "2022-02-12",
+      "workedDays": {
+        "2022-02": 58,
+        "2022-03": 59
+      },
+      "hourlyPay": 7.5,
+      "type": 2,
+      "distanceKms": 59.8,
+      "pricePerKm": {
+        "2021": 58,
+        "2022": 59
+      }
+    },
+    {
+      "id": 3,
       "name": "Fran",
       "entranceDate": "2022-02-12",
       "workedDays": {
@@ -20,7 +36,7 @@
         "2022-03": 59
       },
       "hourlyPay": 7.5,
-      "type": 3,
+      "type": 4,
       "awardPercent": {
         "2021": 0.25,
         "2022": 0.5
