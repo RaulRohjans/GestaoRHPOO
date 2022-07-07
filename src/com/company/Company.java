@@ -3,12 +3,11 @@ package com.company;
 import java.util.ArrayList;
 
 public class Company {
-    //field
-    private ArrayList<Integer> employees;
+   //field
+    private final ArrayList<Employee> employees;
     
     //constructor
     public Company(){
-        this.employees = new ArrayList<Integer>();
-    }    
-
+        this.employees = new ArrayList<>();
+    } 
 }
