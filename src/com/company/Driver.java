@@ -17,6 +17,24 @@ public class Driver extends Employee{
         this.pricePerKm = new HashMap<String, String>();
     }
 
+    public Driver() {
+        super();
+        setType(EmployeeType.DRIVER);
+        this.distanceKms = 0;
+        this.pricePerKm = new HashMap<String, String>();
+    }
+
+    //Methods
+    public void addPricePerKm(int year, double price){
+        if(price < 0){
+            throw new IllegalArgumentException("Price cannot be negative!");
+        }
+        if (year < 1){
+            throw new IllegalArgumentException("Year cannot be negative!");
+        }
+        pricePerKm.put(String.valueOf(year), String.valueOf(price));
+    }
+
     //Getters and Setters
     public double getDistanceKms() {
         return distanceKms;

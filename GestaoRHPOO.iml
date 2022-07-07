@@ -7,5 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="github.anandvarkeyphilips.json.java.ordered" level="application" />
+    <orderEntry type="library" name="antkorwin.ioutils" level="application" />
   </component>
 </module>
