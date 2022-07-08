@@ -144,7 +144,9 @@ public class Main {
                     break;
                 }
                 case 6: //Get all Employees
-                    System.out.println("Test 6");
+                    System.out.flush();
+
+                    company.showAllEmployees();
                     break;
                 case 7: //Get All Employees per Category
                     System.out.println("Test 7");

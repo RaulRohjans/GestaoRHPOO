@@ -10,21 +10,21 @@ import java.util.HashMap;
 public class Salesman extends Employee{
     //Fields
     private ArrayList<Sale> sales;
-    private Map <Double, Double> awardPercent;
+    private Map <Integer, Double> awardPercent;
 
     //Constructors
     public Salesman(int id, String name, Date entranceDate, double hourlyPay, double awardPercent) {
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.SALESMAN);
         sales = new ArrayList<Sale>();
-        this.awardPercent = new HashMap <Double, Double>();
+        this.awardPercent = new HashMap <Integer, Double>();
     }
 
     public Salesman() {
         super();
         setType(EmployeeType.SALESMAN);
         sales = new ArrayList<Sale>();
-        this.awardPercent = new HashMap <Double, Double>();
+        this.awardPercent = new HashMap <Integer, Double>();
     }
 
     //Methods
@@ -44,6 +44,12 @@ public class Salesman extends Employee{
         }
 
         sales.add(new Sale(sales.get(sales.size()-1).getId() + 1, total, saleDate));
+    }
+
+    public void addAwardPec(int year, double percent){
+        if(year < 1000 || percent < 0)
+            throw new IllegalArgumentException("Invalid award percent arguments.");
+        awardPercent.put(year, percent);
     }
 
     public void showSales() {
@@ -102,11 +108,11 @@ public class Salesman extends Employee{
     }
 
     //Getters and Setters
-    public Map<Double, Double> getAwardPercent() {
+    public Map<Integer, Double> getAwardPercent() {
         return awardPercent;
     }
 
-    public void setAwardPercent(Map<Double, Double> awardPercent) {
+    public void setAwardPercent(Map<Integer, Double> awardPercent) {
         this.awardPercent = awardPercent;
     }
 }

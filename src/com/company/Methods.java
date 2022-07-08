@@ -1,10 +1,15 @@
 package com.company;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Methods {
@@ -80,7 +85,7 @@ public class Methods {
                     employee = new Manager();
                     break;
                 }
-                case 2: //DRIVER
+                case 2: { //DRIVER
                     employee = new Driver();
                     ((Driver) employee).setDistanceKms(obj.getDouble("distanceKms"));
 
@@ -92,11 +97,29 @@ public class Methods {
                         ((Driver) employee).addPricePerKm(Integer.parseInt(key), priceKM.getDouble(key));
                     }
                     break;
-
-                case 3: //SALESMAN
+                }
+                case 3: { //SALESMAN
                     employee = new Salesman();
 
+                    //Fetch award percent
+                    JSONObject awardPerc = obj.getJSONObject("awardPercent");
+                    Iterator<String> keys = awardPerc.keys();
+                    while (keys.hasNext()) {
+                        String key = keys.next();
+                        ((Salesman) employee).addAwardPec(Integer.parseInt(key), awardPerc.getDouble(key));
+                    }
+
+                    //Fetch Sales
+                    JSONArray sales = obj.getJSONArray("sales");
+                    for (int i = 0; i < sales.length(); i++) {
+                        ((Salesman) employee).addSale(new Sale(
+                                sales.getJSONObject(i).getInt("id"),
+                                sales.getJSONObject(i).getDouble("total"),
+                                new SimpleDateFormat("yyyy-MM-dd").parse(sales.getJSONObject(i).getString("saleDate"))
+                        ));
+                    }
                     break;
+                }
                 default:
                     return null;
             }
