@@ -44,7 +44,19 @@ public class Employee {
 
     public void addWorkedDays(int days){
         Calendar calendar = Calendar.getInstance();
-        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH)), days);
+        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + 1), days);
+    }
+
+    public double calcPaycheck(){
+        double total = 0;
+
+        if(workedDays.size() < 1)
+            return 0;
+
+        int days = workedDays.get(Calendar.getInstance().get(Calendar.YEAR) + "-" +
+                Methods.getFormattedMonth());
+
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
     }
 
     /*public double getBasePay() {

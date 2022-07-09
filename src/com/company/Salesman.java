@@ -99,6 +99,35 @@ public class Salesman extends Employee{
         System.out.println("All sales with the ID " + id + " where removed.");
     }
 
+    public ArrayList<Sale> getMonthlySales(){
+        ArrayList<Sale> monthlySales = new ArrayList<Sale>();
+        for(Sale sale : sales){
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(sale.getSaleDate());
+
+            if(calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)
+                    && calendar.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
+                monthlySales.add(sale);
+        }
+        return monthlySales;
+    }
+
+    @Override
+    public double calcPaycheck() {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> monthlySales = getMonthlySales();
+
+        //Calculate total in monthly sales
+        double total = 0;
+        for(Sale sale: monthlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcPaycheck() + (total * (1 + percent));
+    }
+
+    //Getters and setters
     public ArrayList<Sale> getSales() {
         return sales;
     }

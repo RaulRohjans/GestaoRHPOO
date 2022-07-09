@@ -112,6 +112,9 @@ public class Main {
                         company.deleteEmployees();
                         for(int i = 0; i < employees.length(); i++ ){
                             Employee employee = Methods.GetEmployeeFromJSON(employees.getJSONObject(i));
+                            if(employee == null)
+                                throw new NullPointerException("Could not read employee, there has been an error parsing the file.\n" +
+                                        "Make sure the employee types are correct.");
                             company.addEmployee(employee);
                         }
                     }
@@ -125,7 +128,6 @@ public class Main {
                         Methods.AwaitInput();
                         break;
                     }
-
 
                     Methods.AwaitInput();
                     break;
@@ -147,62 +149,24 @@ public class Main {
                     System.out.flush();
 
                     company.showAllEmployees();
+                    Methods.AwaitInput();
                     break;
                 case 7: //Get All Employees per Category
                     System.out.println("Test 7");
                     break;
                 case 8: //Calculate Total Paychecks to Pay
-                    System.out.println("Test 8");
+                    double totalToPay = 0;
+                    for(Employee emp: company.Employees()){
+                        totalToPay = emp.calcPaycheck();
+                    }
+
+                    System.out.println("Total due this month: " + totalToPay);
+                    Methods.AwaitInput();
                     break;
                 case 9: //Calculate All Costs
                     System.out.println("Test 9");
                     break;
                 case 10: //Export User List
-                    /* File Structure
-                    {
-                        employees : [
-                            {
-                                id: 1,
-                                name: Raul,
-                                entranceDate: 2022-08-12,
-                                "workedDays": {
-                                    "2022-02": 58,
-                                    "2022-03": 59
-                                },
-                                hourlyPay: 5.5,
-                                type: 0
-                            },
-                            {
-                                id: 2,
-                                name: Fran,
-                                entranceDate: 2022-02-12,
-                                "workedDays": {
-                                    "2022-02": 58,
-                                    "2022-03": 59
-                                },
-                                hourlyPay: 7.5,
-                                type: 3,
-                                awardPercent: {
-                                    2021: 0.25,
-                                    2022: 0.5
-                                },
-                                sales: [
-                                    {
-                                        id: 1,
-                                        total: 59.9,
-                                        saleDate: 2021-08-09
-                                    },
-                                    {
-                                        id: 2,
-                                        total: 41.9,
-                                        saleDate: 2022-02-15
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                     */
-
 
                     System.out.println("Test 10");
                     break;

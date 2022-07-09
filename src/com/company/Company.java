@@ -25,6 +25,8 @@ public class Company {
                 return;
             }
         }
+
+        employees.add(employee);
     }
 
     public Employee getEmployee(int id){
@@ -51,6 +53,12 @@ public class Company {
     }
 
     public void showAllEmployees(){
+        if(employees.size() < 1){
+            System.out.println("Not employees to show.");
+            return;
+        }
+
+
         System.out.println("--------- // ----------");
         for(Employee emp: employees){
             System.out.println("ID: " + emp.getId());

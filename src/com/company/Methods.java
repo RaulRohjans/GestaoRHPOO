@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Scanner;
@@ -87,13 +88,19 @@ public class Methods {
                 }
                 case 2: { //DRIVER
                     employee = new Driver();
-                    ((Driver) employee).setDistanceKms(obj.getDouble("distanceKms"));
+                    //Fetch km made
+                    JSONObject distanceKm = obj.getJSONObject("distanceKms");
+                    Iterator<String> distKeys = distanceKm.keys();
+                    while (distKeys.hasNext()) {
+                        String key = distKeys.next();
+                        ((Driver) employee).setKmMade(key, distanceKm.getDouble(key));
+                    }
 
                     //Fetch price per km
                     JSONObject priceKM = obj.getJSONObject("pricePerKm");
-                    Iterator<String> keys = priceKM.keys();
-                    while (keys.hasNext()) {
-                        String key = keys.next();
+                    Iterator<String> priceKeys = priceKM.keys();
+                    while (priceKeys.hasNext()) {
+                        String key = priceKeys.next();
                         ((Driver) employee).addPricePerKm(Integer.parseInt(key), priceKM.getDouble(key));
                     }
                     break;
@@ -147,5 +154,11 @@ public class Methods {
         }
 
         return employee;
+    }
+
+    public static String getFormattedMonth() {
+        String month = String.valueOf(Calendar.getInstance().get(Calendar.MONTH) + 1);
+
+        return (month.length() > 1) ? month : "0" + month;
     }
 }

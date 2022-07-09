@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Manager extends Employee{
@@ -17,11 +18,15 @@ public class Manager extends Employee{
         setType(EmployeeType.MANAGER);
     }
     
-   ///Method
-    /*public void salary(){
-        return (getBasePay * AWARD) + getBasePay;
+    //Methods
+    @Override
+    public double calcPaycheck() {
+        int days = super.getWorkedDays().get(Calendar.getInstance().get(Calendar.YEAR) + "-" +
+                Methods.getFormattedMonth());
+
+        return super.calcPaycheck() + ((days * 8) * super.getHourlyPay()) * (AWARD+1);
     }
-    */
+
     //Getter
     public static double getAWARD() {
         return AWARD;
