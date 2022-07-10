@@ -1,11 +1,7 @@
 package com.company;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Company {
 
@@ -112,6 +108,38 @@ public class Company {
 
             System.out.println("--------- // ----------");
         }
+    }
+
+    public void showAllCosts(int year){
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        /* Trimester (3 months) */
+        double trimester = 0;
+        for(Employee emp : employees){
+            trimester += emp.calcTrimesterPaycheck(year);
+        }
+        /*---------------------*/
+
+        /* Semester (6 months) */
+        double semester = 0;
+        for(Employee emp : employees){
+            semester += emp.calcSemesterPaycheck(year);
+        }
+        /*---------------------*/
+
+        /* Yearly */
+        double yearly = 0;
+        for(Employee emp : employees){
+            yearly += emp.calcYearPaycheck(year);
+        }
+        /*--------*/
+
+        //Show results
+        System.out.println("--------- " + year + " ---------");
+        System.out.println("Trimestral Costs: " + df.format(trimester));
+        System.out.println("Semestral Costs: " + df.format(semester));
+        System.out.println("Yearly Costs: " + df.format(yearly));
+        System.out.println("---------  //  ---------");
     }
 
     /* Getters and Setters*/

@@ -112,6 +112,18 @@ public class Salesman extends Employee{
         return monthlySales;
     }
 
+    public ArrayList<Sale> getYearlySales(int year){
+        ArrayList<Sale> monthlySales = new ArrayList<Sale>();
+        for(Sale sale : sales){
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(sale.getSaleDate());
+
+            if(calendar.get(Calendar.YEAR) == year)
+                monthlySales.add(sale);
+        }
+        return monthlySales;
+    }
+
     @Override
     public double calcPaycheck() {
         double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
@@ -124,7 +136,52 @@ public class Salesman extends Employee{
             total += sale.getTotal();
         }
 
-        return super.calcPaycheck() + (total * (1 + percent));
+        return super.calcPaycheck() + (total * percent);
+    }
+
+    @Override
+    public double calcTrimesterPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcTrimesterPaycheck(year) + ((total * percent)/12) * 3;
+    }
+
+    @Override
+    public double calcSemesterPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcSemesterPaycheck(year) + ((total * percent)/12) * 6;
+    }
+
+    @Override
+    public double calcYearPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcYearPaycheck(year) + total * percent;
     }
 
     //Getters and setters

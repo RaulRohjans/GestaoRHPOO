@@ -160,11 +160,30 @@ public class Main {
                         totalToPay = emp.calcPaycheck();
                     }
 
+                    System.out.flush();
                     System.out.println("Total due this month: " + totalToPay);
                     Methods.AwaitInput();
                     break;
                 case 9: //Calculate All Costs
-                    System.out.println("Test 9");
+                    System.out.print("Year: ");
+
+                    try{
+                        int year = Integer.parseInt(scanner.nextLine());
+
+                        if(year < 1){
+                            System.out.println("Year is invalid.");
+                            Methods.AwaitInput();
+                            break;
+                        }
+
+                        System.out.flush();
+                        company.showAllCosts(year);
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println("Year is invalid.");
+                    }
+
+                    Methods.AwaitInput();
                     break;
                 case 10: //Export User List
 

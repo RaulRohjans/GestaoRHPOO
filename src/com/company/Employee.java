@@ -1,5 +1,7 @@
 package com.company;
 
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -59,17 +61,70 @@ public class Employee {
         return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
     }
 
-    /*public double getBasePay() {
-        return workedDays * (hourlyPay * 8);
-    }*/
+    public double calcTrimesterPaycheck(int year){
+        double yearTotal = 0;
+        int days = 0;
 
-    /*public double getExtraPay() {
-        return workedDays * DAILY_FOOD_SUBSIDY;
-    }*/
+        if(workedDays.size() < 1 || year < 1)
+            return 0;
 
-    /*public double getFullPay() {
-        return getBasePay() + getExtraPay();
-    }*/
+        /* Fetch total worked days */
+        int monthCount = 0;
+        for(String key: workedDays.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                days += workedDays.get(key);
+                monthCount++;
+            }
+        }
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+
+        //Do an average if worked more than 3 months that year
+        if(monthCount >= 3)
+            return (yearTotal / monthCount) * 3;
+        else
+            return yearTotal;
+    }
+
+    public double calcSemesterPaycheck(int year){
+        double yearTotal = 0;
+        int days = 0;
+
+        if(workedDays.size() < 1 || year < 1)
+            return 0;
+
+        /* Fetch total worked days */
+        int monthCount = 0;
+        for(String key: workedDays.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                days += workedDays.get(key);
+                monthCount++;
+            }
+        }
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+
+        //Do an average if worked more than 6 months that year
+        if(monthCount >= 6)
+            return (yearTotal / monthCount) * 6;
+        else
+            return yearTotal;
+    }
+
+    public double calcYearPaycheck(int year){
+        int days = 0;
+
+        if(workedDays.size() < 1 || year < 1)
+            return 0;
+
+        /* Fetch total worked days */
+        for(String key: workedDays.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                days += workedDays.get(key);
+            }
+        }
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+    }
 
     //Getters and Setters
     public int getId() {

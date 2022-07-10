@@ -1,9 +1,6 @@
 package com.company;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Driver extends Employee{
     //Fields
@@ -53,6 +50,73 @@ public class Driver extends Employee{
         double price = pricePerKm.get(String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         return super.calcPaycheck() + distance * price;
+    }
+
+    @Override
+    public double calcTrimesterPaycheck(int year) {
+        int kms = 0;
+        double yearTotal = 0;
+
+        if(year < 1)
+            return 0;
+
+        /* Fetch total distance */
+        int monthCount = 0;
+        for(String key: distanceKms.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                kms += distanceKms.get(key);
+                monthCount++;
+            }
+        }
+        yearTotal = kms * pricePerKm.get(String.valueOf(year));
+
+        //Do an average if worked more than 3 months that year
+        if(monthCount >= 3)
+            return super.calcTrimesterPaycheck(year) + (yearTotal / monthCount) * 3;
+        else
+            return super.calcTrimesterPaycheck(year) + yearTotal;
+    }
+
+    @Override
+    public double calcSemesterPaycheck(int year) {
+        int kms = 0;
+        double yearTotal = 0;
+
+        if(year < 1)
+            return 0;
+
+        /* Fetch total distance */
+        int monthCount = 0;
+        for(String key: distanceKms.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                kms += distanceKms.get(key);
+                monthCount++;
+            }
+        }
+        yearTotal = kms * pricePerKm.get(String.valueOf(year));
+
+        //Do an average if worked more than 3 months that year
+        if(monthCount >= 6)
+            return super.calcSemesterPaycheck(year) + (yearTotal / monthCount) * 6;
+        else
+            return super.calcSemesterPaycheck(year) + yearTotal;
+    }
+
+    @Override
+    public double calcYearPaycheck(int year) {
+        int kms = 0;
+
+        if(year < 1)
+            return 0;
+
+        /* Fetch total distance */
+        for(String key: distanceKms.keySet()){
+            if(Objects.equals(key.split("-")[0], String.valueOf(year))){
+                kms += distanceKms.get(key);
+            }
+        }
+
+        return super.calcYearPaycheck(year) + kms * pricePerKm.get(String.valueOf(year));
     }
 
     //Getters and Setters
