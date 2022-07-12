@@ -50,7 +50,7 @@ public class Methods {
         System.out.println("4. SALESMAN");
         System.out.println("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-");
 
-        System.out.print("\nOpção: ");
+        System.out.print("\nOption: ");
         Scanner scnr = new Scanner(System.in);
 
         System.out.flush();
@@ -74,6 +74,8 @@ public class Methods {
             switch (obj.getInt("type")){
                 case 0: { //NORMAL
                     employee = new Employee();
+                    //Employee.newEmployee();
+                    
                     break;
                 }
                 case 1: { //MANAGER

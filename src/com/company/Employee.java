@@ -42,6 +42,23 @@ public class Employee {
         workedDays.put(d, days);
     }
 
+    public void newEmployee() { //converter data para string
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Name: ");
+        name = sc.nextLine();
+            if (name.isEmpty() || name == null) {
+                System.out.println("This is an empty or null data");
+            } else {
+                this.name = name;
+            }
+        System.out.println("Entrance Date (yyyy-mm-dd): ");
+        //entranceDate = sc.nextLine();
+        System.out.println("Hourly Pay: ");
+        this.hourlyPay = sc.nextDouble();
+        System.out.println("Type: ");
+        Methods.CategoryMenu();
+        //Company.addEmployess();
+    }
     public void addWorkedDays(int days){
         Calendar calendar = Calendar.getInstance();
         workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH)), days);
@@ -49,13 +66,13 @@ public class Employee {
 
     /*public double getBasePay() {
         return workedDays * (hourlyPay * 8);
-    }*/
+    }
 
-    /*public double getExtraPay() {
+    public double getExtraPay() {
         return workedDays * DAILY_FOOD_SUBSIDY;
-    }*/
+    }
 
-    /*public double getFullPay() {
+    public double getFullPay() {
         return getBasePay() + getExtraPay();
     }*/
 
@@ -63,7 +80,6 @@ public class Employee {
     public int getId() {
         return id;
     }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -71,7 +87,6 @@ public class Employee {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -79,35 +94,27 @@ public class Employee {
     public Date getEntranceDate() {
         return entranceDate;
     }
-
     public void setEntranceDate(Date entranceDate) {
         this.entranceDate = entranceDate;
     }
-
     public void setEntranceDate(String entranceDate) throws ParseException {
         this.entranceDate = new SimpleDateFormat("yyyy-MM-dd").parse(entranceDate);
     }
-
     public HashMap<String, Integer> getWorkedDays() {
         return workedDays;
     }
-
     public void setWorkedDays(HashMap<String, Integer> workedDays) {
         this.workedDays = workedDays;
     }
-
     public EmployeeType getType() {
         return type;
     }
-
     public void setType(EmployeeType type) {
         this.type = type;
     }
-
     public double getHourlyPay() {
         return hourlyPay;
     }
-
     public void setHourlyPay(double hourlyPay) {
         this.hourlyPay = hourlyPay;
     }

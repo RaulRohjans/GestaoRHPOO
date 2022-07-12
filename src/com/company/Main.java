@@ -44,7 +44,8 @@ public class Main {
                     System.out.println("Bye bye!");
                     return;
                 case 1: //Insert New Employee
-                    System.out.println("Test 1");
+                    System.out.println("Add Employee");
+                    //Employee.newEmployee();
                     break;
                 case 2: //Check for Employee
                     System.out.print("Employee ID: ");
@@ -64,6 +65,7 @@ public class Main {
 
                 case 3: //Get Employee Record
                     System.out.println("Test 3");
+                    //Company.returnEmployee(int id);
                     break;
 
                 case 4: //Import Employee List
@@ -145,6 +147,7 @@ public class Main {
                 }
                 case 6: //Get all Employees
                     System.out.println("Test 6");
+
                     break;
                 case 7: //Get All Employees per Category
                     System.out.println("Test 7");
@@ -200,8 +203,6 @@ public class Main {
                         ]
                     }
                      */
-
-
                     System.out.println("Test 10");
                     break;
                 default:

@@ -1,11 +1,12 @@
 package com.company;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Company {
 
     //fields
-    private ArrayList<Employee> employees;
+    public ArrayList<Employee> employees;
     
     //constructor
     public Company(){
@@ -22,6 +23,8 @@ public class Company {
         }
     }
 
+        }
+    }
     public Employee getEmployee(int id){
         for(Employee emp : employees){
             if(emp.getId() == id){
@@ -30,11 +33,9 @@ public class Company {
         }
         return null;
     }
-
     public void deleteEmployees(){
         employees = new ArrayList<Employee>();
     }
-
     public int employeeCountPerCategory(Employee.EmployeeType e){
         int cnt = 0;
         for(Employee emp : employees){
