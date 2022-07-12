@@ -23,6 +23,70 @@ public class Company {
         }
     }
 
+    public void addEmployees(Employee emp){
+        employees.add(emp);
+    }
+
+    public void returnEmployee(int id) {
+        for(Employee emp: employees){
+            if(emp.getId() == id){
+                System.out.println("Name: \n" + emp.getName()+ "Entrance Date: \n"+ emp.getEntranceDate() +
+                        "Type: \n" + emp.getType() + "Hourly Pay: \n" + emp.getHourlyPay() +
+                        "Worked Days: \n" + emp.getWorkedDays());
+                return;
+            } else {
+                System.out.println("Employee doesn't exist");
+            }
+        }
+    }
+
+    public void showEmployees() {
+        for(Employee e: employees){
+            System.out.println("Name: \n" + e.getName()+ "Entrance Date: \n"+ e.getEntranceDate() +
+                    "Type: \n" + e.getType() + "Hourly Pay: \n" + e.getHourlyPay() +
+                    "Worked Days: \n" + e.getWorkedDays());
+        } //(e)
+    }
+
+    public void showEmployeePerCategory() {
+        System.out.println("Categories: \n");
+        System.out.println("1. NORMAL\n");
+        System.out.println("2. MANAGER\n");
+        System.out.println("3. DRIVER\n");
+        System.out.println("4. SALESMAN\n");
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Choose a option: ");
+        while (sc.hasNext()) {
+            int select = -1;
+            if (sc.hasNextInt()) {
+                select = sc.nextInt();
+            }
+
+            switch (select) {
+                case 1:
+                    for(Employee.EmployeeType emp : Employee.EmployeeType.NORMAL.values()){
+                        System.out.println(emp);
+                    }
+                    break;
+                case 2:
+                    for(Employee.EmployeeType emp : Employee.EmployeeType.MANAGER.values()){
+                        System.out.println(emp);
+                    }
+                    break;
+                case 3:
+                    for(Employee.EmployeeType emp : Employee.EmployeeType.DRIVER.values()){
+                        System.out.println(emp);
+                    }
+                    break;
+                case 4:
+                    for(Employee.EmployeeType emp : Employee.EmployeeType.SALESMAN.values()){
+                        System.out.println(emp);
+                    }
+                    break;
+                default:
+                    System.out.println("Choose a valid option");
+            }
         }
     }
     public Employee getEmployee(int id){
