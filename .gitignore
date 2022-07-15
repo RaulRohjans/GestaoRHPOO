@@ -1,5 +1,4 @@
-
-out/production/GestaoRHPOO/com/company/Main.class
-/build/
-/test/
+out/*
+build/*
+test/*
 /out/
