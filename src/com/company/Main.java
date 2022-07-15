@@ -46,6 +46,7 @@ public class Main {
                 case 1: //Insert New Employee
                     System.out.println("Add Employee");
                     //Employee.newEmployee();
+                    Methods.AwaitInput();
                     break;
                 case 2: //Check for Employee
                     System.out.print("Employee ID: ");
@@ -66,6 +67,7 @@ public class Main {
                 case 3: //Get Employee Record
                     System.out.println("Test 3");
                     //Company.returnEmployee(int id);
+                    Methods.AwaitInput();
                     break;
 
                 case 4: //Import Employee List
@@ -114,6 +116,9 @@ public class Main {
                         company.deleteEmployees();
                         for(int i = 0; i < employees.length(); i++ ){
                             Employee employee = Methods.GetEmployeeFromJSON(employees.getJSONObject(i));
+                            if(employee == null)
+                                throw new NullPointerException("Could not read employee, there has been an error parsing the file.\n" +
+                                        "Make sure the employee types are correct.");
                             company.addEmployee(employee);
                         }
                     }
@@ -127,7 +132,6 @@ public class Main {
                         Methods.AwaitInput();
                         break;
                     }
-
 
                     Methods.AwaitInput();
                     break;
@@ -147,18 +151,47 @@ public class Main {
                 }
                 case 6: //Get all Employees
                     System.out.println("Test 6");
-
+                    System.out.flush();
+                    company.showAllEmployees();
+                    Methods.AwaitInput();
                     break;
                 case 7: //Get All Employees per Category
                     System.out.println("Test 7");
+                    Methods.AwaitInput();
                     break;
                 case 8: //Calculate Total Paychecks to Pay
-                    System.out.println("Test 8");
+                    double totalToPay = 0;
+                    for(Employee emp: company.Employees()){
+                        totalToPay = emp.calcPaycheck();
+                    }
+
+                    System.out.flush();
+                    System.out.println("Total due this month: " + totalToPay);
+                    Methods.AwaitInput();
                     break;
                 case 9: //Calculate All Costs
-                    System.out.println("Test 9");
+                    System.out.print("Year: ");
+
+                    try{
+                        int year = Integer.parseInt(scanner.nextLine());
+
+                        if(year < 1){
+                            System.out.println("Year is invalid.");
+                            Methods.AwaitInput();
+                            break;
+                        }
+
+                        System.out.flush();
+                        company.showAllCosts(year);
+                    }
+                    catch (NumberFormatException e){
+                        System.out.println("Year is invalid.");
+                    }
+
+                    Methods.AwaitInput();
                     break;
                 case 10: //Export User List
+
                     /* File Structure
                     {
                         employees : [
@@ -203,8 +236,11 @@ public class Main {
                         ]
                     }
                      */
-                    System.out.println("Test 10");
+
+                  // Employee.exportFile();
+                    Methods.AwaitInput();
                     break;
+
                 default:
                     System.out.println("Error: Invalid option!");
 

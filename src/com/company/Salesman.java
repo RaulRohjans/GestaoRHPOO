@@ -10,21 +10,21 @@ import java.util.HashMap;
 public class Salesman extends Employee{
     //Fields
     private ArrayList<Sale> sales;
-    private Map <Double, Double> awardPercent;
+    private Map <Integer, Double> awardPercent;
 
     //Constructors
     public Salesman(int id, String name, Date entranceDate, double hourlyPay, double awardPercent) {
         super(id, name, entranceDate, hourlyPay);
         setType(EmployeeType.SALESMAN);
         sales = new ArrayList<Sale>();
-        this.awardPercent = new HashMap <Double, Double>();
+        this.awardPercent = new HashMap <Integer, Double>();
     }
 
     public Salesman() {
         super();
         setType(EmployeeType.SALESMAN);
         sales = new ArrayList<Sale>();
-        this.awardPercent = new HashMap <Double, Double>();
+        this.awardPercent = new HashMap <Integer, Double>();
     }
 
     //Methods
@@ -44,6 +44,12 @@ public class Salesman extends Employee{
         }
 
         sales.add(new Sale(sales.get(sales.size()-1).getId() + 1, total, saleDate));
+    }
+
+    public void addAwardPec(int year, double percent){
+        if(year < 1000 || percent < 0)
+            throw new IllegalArgumentException("Invalid award percent arguments.");
+        awardPercent.put(year, percent);
     }
 
     public void showSales() {
@@ -93,6 +99,92 @@ public class Salesman extends Employee{
         System.out.println("All sales with the ID " + id + " where removed.");
     }
 
+    public ArrayList<Sale> getMonthlySales(){
+        ArrayList<Sale> monthlySales = new ArrayList<Sale>();
+        for(Sale sale : sales){
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(sale.getSaleDate());
+
+            if(calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)
+                    && calendar.get(Calendar.MONTH) == Calendar.getInstance().get(Calendar.MONTH))
+                monthlySales.add(sale);
+        }
+        return monthlySales;
+    }
+
+    public ArrayList<Sale> getYearlySales(int year){
+        ArrayList<Sale> monthlySales = new ArrayList<Sale>();
+        for(Sale sale : sales){
+            Calendar calendar = new GregorianCalendar();
+            calendar.setTime(sale.getSaleDate());
+
+            if(calendar.get(Calendar.YEAR) == year)
+                monthlySales.add(sale);
+        }
+        return monthlySales;
+    }
+
+    @Override
+    public double calcPaycheck() {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> monthlySales = getMonthlySales();
+
+        //Calculate total in monthly sales
+        double total = 0;
+        for(Sale sale: monthlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcPaycheck() + (total * percent);
+    }
+
+    @Override
+    public double calcTrimesterPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcTrimesterPaycheck(year) + ((total * percent)/12) * 3;
+    }
+
+    @Override
+    public double calcSemesterPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcSemesterPaycheck(year) + ((total * percent)/12) * 6;
+    }
+
+    @Override
+    public double calcYearPaycheck(int year) {
+        double percent = awardPercent.get(Calendar.getInstance().get(Calendar.YEAR));
+
+        ArrayList<Sale> yearlySales = getYearlySales(year);
+
+        //Calculate total in yearly sales
+        double total = 0;
+        for(Sale sale: yearlySales){
+            total += sale.getTotal();
+        }
+
+        return super.calcYearPaycheck(year) + total * percent;
+    }
+
+    //Getters and setters
     public ArrayList<Sale> getSales() {
         return sales;
     }
@@ -102,11 +194,11 @@ public class Salesman extends Employee{
     }
 
     //Getters and Setters
-    public Map<Double, Double> getAwardPercent() {
+    public Map<Integer, Double> getAwardPercent() {
         return awardPercent;
     }
 
-    public void setAwardPercent(Map<Double, Double> awardPercent) {
+    public void setAwardPercent(Map<Integer, Double> awardPercent) {
         this.awardPercent = awardPercent;
     }
 }

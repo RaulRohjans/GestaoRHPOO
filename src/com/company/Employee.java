@@ -1,5 +1,9 @@
 package com.company;
 
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,7 +15,10 @@ public class Employee {
     private Date entranceDate;
     private HashMap<String, Integer> workedDays;
     private double hourlyPay;
-    public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN};
+
+    public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN}
+
+    ;
     private EmployeeType type;
 
     private final static double DAILY_FOOD_SUBSIDY = 4.79;
@@ -23,7 +30,7 @@ public class Employee {
         this.entranceDate = entranceDate;
         this.workedDays = new HashMap<String, Integer>();
         this.type = EmployeeType.NORMAL;
-        if(hourlyPay <= 0)
+        if (hourlyPay <= 0)
             throw new IllegalArgumentException("Invalid value for hourlyPay.");
         this.hourlyPay = hourlyPay;
     }
@@ -38,7 +45,7 @@ public class Employee {
     }
 
     //Methods
-    public void addWorkedDays(String d, int days){
+    public void addWorkedDays(String d, int days) {
         workedDays.put(d, days);
     }
 
@@ -46,23 +53,25 @@ public class Employee {
         Scanner sc = new Scanner(System.in);
         System.out.println("Name: ");
         name = sc.nextLine();
-            if (name.isEmpty() || name == null) {
-                System.out.println("This is an empty or null data");
-            } else {
-                this.name = name;
-            }
+        if (name.isEmpty() || name == null) {
+            System.out.println("This is an empty or null data");
+        } else {
+            this.name = name;
+        }
         System.out.println("Entrance Date (yyyy-mm-dd): ");
         //entranceDate = sc.nextLine();
         System.out.println("Hourly Pay: ");
         this.hourlyPay = sc.nextDouble();
         System.out.println("Type: ");
         Methods.CategoryMenu();
-        //Company.addEmployess();
+        //Company.addEmployees();
     }
-    public void addWorkedDays(int days){
+
+    public void addWorkedDays(int days) {
         Calendar calendar = Calendar.getInstance();
-        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH)), days);
+        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + 1), days);
     }
+
 
     /*public double getBasePay() {
         return workedDays * (hourlyPay * 8);
@@ -75,11 +84,111 @@ public class Employee {
     public double getFullPay() {
         return getBasePay() + getExtraPay();
     }*/
+    public double calcPaycheck() {
+        double total = 0;
+
+        if (workedDays.size() < 1)
+            return 0;
+
+        int days = workedDays.get(Calendar.getInstance().get(Calendar.YEAR) + "-" +
+                Methods.getFormattedMonth());
+
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+    }
+
+    public double calcTrimesterPaycheck(int year) {
+        double yearTotal = 0;
+        int days = 0;
+
+        if (workedDays.size() < 1 || year < 1)
+            return 0;
+
+        /* Fetch total worked days */
+        int monthCount = 0;
+        for (String key : workedDays.keySet()) {
+            if (Objects.equals(key.split("-")[0], String.valueOf(year))) {
+                days += workedDays.get(key);
+                monthCount++;
+            }
+        }
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+
+        //Do an average if worked more than 3 months that year
+        if (monthCount >= 3)
+            return (yearTotal / monthCount) * 3;
+        else
+            return yearTotal;
+    }
+
+    public double calcSemesterPaycheck(int year) {
+        double yearTotal = 0;
+        int days = 0;
+
+        if (workedDays.size() < 1 || year < 1)
+            return 0;
+
+        /* Fetch total worked days */
+        int monthCount = 0;
+        for (String key : workedDays.keySet()) {
+            if (Objects.equals(key.split("-")[0], String.valueOf(year))) {
+                days += workedDays.get(key);
+                monthCount++;
+            }
+        }
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+
+        //Do an average if worked more than 6 months that year
+        if (monthCount >= 6)
+            return (yearTotal / monthCount) * 6;
+        else
+            return yearTotal;
+    }
+
+    public double calcYearPaycheck(int year) {
+        int days = 0;
+
+        if (workedDays.size() < 1 || year < 1)
+            return 0;
+
+        /* Fetch total worked days */
+        for (String key : workedDays.keySet()) {
+            if (Objects.equals(key.split("-")[0], String.valueOf(year))) {
+                days += workedDays.get(key);
+            }
+        }
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+    }
+
+    public void exportFile() { // if: type,awardPercent, sales
+        //Create a JSON object
+        JSONObject object = new JSONObject();
+
+        //Add values
+        object.put("ID: ", getId());
+        object.put("Name: ", getName());
+        object.put("Entrance date: ", getEntranceDate());
+        object.put("Worked days: ", getWorkedDays());
+        object.put("Hourly pay: ", getHourlyPay());
+        object.put("Type: ", getType());
+
+        //Create a new FileWriter object
+        try {
+            FileWriter file = new FileWriter("C:/employees.json");
+            file.write(object.toString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("JSON file created: " + object);
+    }
 
     //Getters and Setters
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -87,6 +196,7 @@ public class Employee {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -94,28 +204,37 @@ public class Employee {
     public Date getEntranceDate() {
         return entranceDate;
     }
+
     public void setEntranceDate(Date entranceDate) {
         this.entranceDate = entranceDate;
     }
+
     public void setEntranceDate(String entranceDate) throws ParseException {
         this.entranceDate = new SimpleDateFormat("yyyy-MM-dd").parse(entranceDate);
     }
+
     public HashMap<String, Integer> getWorkedDays() {
         return workedDays;
     }
+
     public void setWorkedDays(HashMap<String, Integer> workedDays) {
         this.workedDays = workedDays;
     }
+
     public EmployeeType getType() {
         return type;
     }
+
     public void setType(EmployeeType type) {
         this.type = type;
     }
+
     public double getHourlyPay() {
         return hourlyPay;
     }
+
     public void setHourlyPay(double hourlyPay) {
         this.hourlyPay = hourlyPay;
     }
+
 }
