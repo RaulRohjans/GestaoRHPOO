@@ -80,7 +80,6 @@ public class Methods {
             switch (obj.getInt("type")){
                 case 0: { //NORMAL
                     employee = new Employee();
-                    //Employee.newEmployee();
                     
                     break;
                 }

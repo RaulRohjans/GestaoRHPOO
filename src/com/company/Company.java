@@ -28,6 +28,7 @@ public class Company {
 
     public void addEmployees(Employee emp){
         employees.add(emp);
+        System.out.println("Added employee");
     }
 
     public void returnEmployee(int id) {
@@ -92,6 +93,7 @@ public class Company {
             }
         }
     }
+
     public Employee getEmployee(int id){
         for(Employee emp : employees){
             if(emp.getId() == id){
@@ -100,9 +102,11 @@ public class Company {
         }
         return null;
     }
+
     public void deleteEmployees(){
         employees = new ArrayList<Employee>();
     }
+
     public int employeeCountPerCategory(Employee.EmployeeType e){
         int cnt = 0;
         for(Employee emp : employees){
