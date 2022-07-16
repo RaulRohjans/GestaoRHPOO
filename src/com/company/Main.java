@@ -6,17 +6,14 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
 import org.json.*;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         int opc = -1;
         Scanner scanner = new Scanner(System.in);
         Company company = new Company();
@@ -43,11 +40,45 @@ public class Main {
                 case 0: //Leave App
                     System.out.println("Bye bye!");
                     return;
-                case 1: //Insert New Employee
-                    System.out.println("Add Employee");
-                    //Employee.newEmployee();
+                case 1: { //Insert New Employee
+                    Employee emp = new Employee();
+                    System.out.println("Name: ");
+                    String name = scanner.nextLine();
+                    if (name.isEmpty()) {
+                        System.out.println("This is an empty or null data");
+                    } else {
+                        emp.setName(name);
+                    }
+                    System.out.println("Entrance Date (yyyy-mm-dd): ");
+                    String dateEntrance = scanner.nextLine();
+                    emp.setEntranceDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateEntrance));
+                    System.out.println("Hourly Pay: ");
+                    emp.setHourlyPay(scanner.nextDouble());
+                    System.out.println("Type: ");
+                    switch (Objects.requireNonNull(Methods.CategoryMenu())) {
+                        case NORMAL ->
+                            company.addEmployee(emp);
+                        case DRIVER -> {
+                            emp = new Driver();
+                            ((Driver)emp).setDistanceKms(new HashMap<String,Double>());
+                            ((Driver)emp).setPricePerKm(new HashMap<String,Double>());
+                            company.addEmployee(emp);
+                        }
+                        case MANAGER -> {
+                            emp = new Manager();
+                            company.addEmployee(emp);
+                        }
+                        case SALESMAN -> {
+                            emp = new Salesman();
+                            ((Salesman)emp).setAwardPercent(new HashMap<Integer,Double>());
+                            ((Salesman)emp).setSales(new ArrayList<Sale>());
+                            company.addEmployee(emp);
+                        }
+                       default -> throw new IllegalStateException("Unexpected value: " + emp.getType());
+                    }
                     Methods.AwaitInput();
                     break;
+                }
                 case 2: //Check for Employee
                     System.out.print("Employee ID: ");
 
@@ -65,8 +96,7 @@ public class Main {
                     break;
 
                 case 3: //Get Employee Record
-                    System.out.println("Test 3");
-                    //Company.returnEmployee(int id);
+                    //company.getEmployee();
                     Methods.AwaitInput();
                     break;
 
@@ -150,13 +180,13 @@ public class Main {
                     break;
                 }
                 case 6: //Get all Employees
-                    System.out.println("Test 6");
                     System.out.flush();
                     company.showAllEmployees();
                     Methods.AwaitInput();
                     break;
                 case 7: //Get All Employees per Category
-                    System.out.println("Test 7");
+                    System.out.flush();
+                    company.showEmployeePerCategory();
                     Methods.AwaitInput();
                     break;
                 case 8: //Calculate Total Paychecks to Pay
@@ -237,13 +267,12 @@ public class Main {
                     }
                      */
 
-                  // Employee.exportFile();
+                    company.exportFile();
                     Methods.AwaitInput();
                     break;
 
                 default:
                     System.out.println("Error: Invalid option!");
-
                     Methods.AwaitInput();
                     break;
             }

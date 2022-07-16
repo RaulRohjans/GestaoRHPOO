@@ -1,5 +1,6 @@
 package com.company;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.FileWriter;
@@ -49,23 +50,7 @@ public class Employee {
         workedDays.put(d, days);
     }
 
-    public void newEmployee() { //converter data para string
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Name: ");
-        name = sc.nextLine();
-        if (name.isEmpty() || name == null) {
-            System.out.println("This is an empty or null data");
-        } else {
-            this.name = name;
-        }
-        System.out.println("Entrance Date (yyyy-mm-dd): ");
-        //entranceDate = sc.nextLine();
-        System.out.println("Hourly Pay: ");
-        this.hourlyPay = sc.nextDouble();
-        System.out.println("Type: ");
-        Methods.CategoryMenu();
-        //Company.addEmployees();
-    }
+
 
     public void addWorkedDays(int days) {
         Calendar calendar = Calendar.getInstance();
@@ -161,28 +146,6 @@ public class Employee {
         return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
     }
 
-    public void exportFile() { // if: type,awardPercent, sales
-        //Create a JSON object
-        JSONObject object = new JSONObject();
-
-        //Add values
-        object.put("ID: ", getId());
-        object.put("Name: ", getName());
-        object.put("Entrance date: ", getEntranceDate());
-        object.put("Worked days: ", getWorkedDays());
-        object.put("Hourly pay: ", getHourlyPay());
-        object.put("Type: ", getType());
-
-        //Create a new FileWriter object
-        try {
-            FileWriter file = new FileWriter("C:/employees.json");
-            file.write(object.toString());
-            file.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("JSON file created: " + object);
-    }
 
     //Getters and Setters
     public int getId() {

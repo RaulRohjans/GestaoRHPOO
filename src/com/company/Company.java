@@ -1,5 +1,10 @@
 package com.company;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -7,14 +12,68 @@ import java.util.Scanner;
 public class Company {
 
     //fields
-    public ArrayList<Employee> employees;
-    
+    private ArrayList<Employee> employees;
+
     //constructor
     public Company(){
         this.employees = new ArrayList<Employee>();
     }
 
     /* Methods */
+
+    public void exportFile() {
+        //Create a JSONArray
+        JSONArray array = new JSONArray();
+        for(Employee e : employees) {
+            JSONObject object = new JSONObject();
+
+            //Add values
+            object.put("ID: ", e.getId());
+            object.put("Name: ", e.getName());
+            object.put("Entrance date: ", e.getEntranceDate());
+            object.put("Worked days: ", e.getWorkedDays());
+            object.put("Hourly pay: ", e.getHourlyPay());
+            object.put("Type: ", e.getType());
+            switch (e.getType()){
+                case NORMAL -> {
+                    array.put(object);
+                }
+                case DRIVER -> {
+                    ((Driver)e).getDistanceKms();
+                    ((Driver)e).getPricePerKm();
+                    array.put(object);
+                }
+                case MANAGER -> {
+                    Manager.getAWARD();
+                    array.put(object);
+                }
+                case SALESMAN -> {
+                    ((Salesman)e).getAwardPercent();
+                    ((Salesman)e).getSales();
+                    array.put(object);
+                }
+                default -> throw new IllegalStateException("Unexpected value: " + e.getType());
+            }
+
+        }
+        //Create a new FileWriter object
+        try {
+            FileWriter file = new FileWriter(File()+"/employees.json");
+            file.write(new JSONObject().put("Employees: ",array).toString());
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("JSON file created: " + array);
+    }
+
+    private String File(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Where you want to save the file?");
+        String path = sc.nextLine();
+        if(path.isEmpty()) { System.out.println("C:"); }
+        return path;
+    }
     public void addEmployee(Employee employee) {
         for(Employee emp : employees){
             if(emp.getId() == employee.getId()){
@@ -25,39 +84,12 @@ public class Company {
 
         employees.add(employee);
     }
-
-    public void addEmployees(Employee emp){
-        employees.add(emp);
-        System.out.println("Added employee");
-    }
-
-    public void returnEmployee(int id) {
-        for(Employee emp: employees){
-            if(emp.getId() == id){
-                System.out.println("Name: \n" + emp.getName()+ "Entrance Date: \n"+ emp.getEntranceDate() +
-                        "Type: \n" + emp.getType() + "Hourly Pay: \n" + emp.getHourlyPay() +
-                        "Worked Days: \n" + emp.getWorkedDays());
-                return;
-            } else {
-                System.out.println("Employee doesn't exist");
-            }
-        }
-    }
-
-    public void showEmployees() {
-        for(Employee e: employees){
-            System.out.println("Name: \n" + e.getName()+ "Entrance Date: \n"+ e.getEntranceDate() +
-                    "Type: \n" + e.getType() + "Hourly Pay: \n" + e.getHourlyPay() +
-                    "Worked Days: \n" + e.getWorkedDays());
-        } //(e)
-    }
-
     public void showEmployeePerCategory() {
         System.out.println("Categories: \n");
-        System.out.println("1. NORMAL\n");
-        System.out.println("2. MANAGER\n");
-        System.out.println("3. DRIVER\n");
-        System.out.println("4. SALESMAN\n");
+        System.out.println("1. NORMAL");
+        System.out.println("2. MANAGER");
+        System.out.println("3. DRIVER");
+        System.out.println("4. SALESMAN");
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Choose a option: ");
@@ -69,23 +101,27 @@ public class Company {
 
             switch (select) {
                 case 1:
-                    for(Employee.EmployeeType emp : Employee.EmployeeType.NORMAL.values()){
-                        System.out.println(emp);
+                    for(Employee emp : employees){
+                        if(emp.getType() == Employee.EmployeeType.NORMAL)
+                            System.out.println(emp);
                     }
                     break;
                 case 2:
-                    for(Employee.EmployeeType emp : Employee.EmployeeType.MANAGER.values()){
-                        System.out.println(emp);
+                    for(Employee emp : employees){
+                        if(emp.getType() == Employee.EmployeeType.MANAGER)
+                            System.out.println(emp);
                     }
                     break;
                 case 3:
-                    for(Employee.EmployeeType emp : Employee.EmployeeType.DRIVER.values()){
-                        System.out.println(emp);
+                    for(Employee emp : employees){
+                        if(emp.getType() == Employee.EmployeeType.DRIVER)
+                            System.out.println(emp);
                     }
                     break;
                 case 4:
-                    for(Employee.EmployeeType emp : Employee.EmployeeType.SALESMAN.values()){
-                        System.out.println(emp);
+                    for(Employee emp : employees){
+                        if(emp.getType() == Employee.EmployeeType.SALESMAN)
+                            System.out.println(emp);
                     }
                     break;
                 default:
