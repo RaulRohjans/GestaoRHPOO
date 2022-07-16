@@ -17,7 +17,7 @@ public class Employee {
     private HashMap<String, Integer> workedDays;
     private double hourlyPay;
 
-    public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN}
+    public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN, NULL}
 
     ;
     private EmployeeType type;

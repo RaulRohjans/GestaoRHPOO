@@ -42,6 +42,7 @@ public class Main {
                     return;
                 case 1: { //Insert New Employee
                     Employee emp = new Employee();
+                    emp.setId(company.newEmployeeID());
                     System.out.println("Name: ");
                     String name = scanner.nextLine();
                     if (name.isEmpty()) {
@@ -54,8 +55,8 @@ public class Main {
                     emp.setEntranceDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateEntrance));
                     System.out.println("Hourly Pay: ");
                     emp.setHourlyPay(scanner.nextDouble());
-                    System.out.println("Type: ");
-                    switch (Objects.requireNonNull(Methods.CategoryMenu())) {
+
+                    switch (Methods.CategoryMenu()) {
                         case NORMAL ->
                             company.addEmployee(emp);
                         case DRIVER -> {
@@ -74,7 +75,7 @@ public class Main {
                             ((Salesman)emp).setSales(new ArrayList<Sale>());
                             company.addEmployee(emp);
                         }
-                       default -> throw new IllegalStateException("Unexpected value: " + emp.getType());
+                        default -> System.out.println("Invalid employee type.");
                     }
                     Methods.AwaitInput();
                     break;
@@ -168,7 +169,7 @@ public class Main {
                 case 5: { //Get Employee Number per Category
                     Employee.EmployeeType category = Methods.CategoryMenu();
 
-                    if(category == null){
+                    if(category == Employee.EmployeeType.NULL){
                         System.out.println("Invalid Category!");
                         Methods.AwaitInput();
                         break;
