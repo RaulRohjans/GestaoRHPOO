@@ -57,23 +57,28 @@ public class Main {
                     emp.setHourlyPay(scanner.nextDouble());
 
                     switch (Methods.CategoryMenu()) {
-                        case NORMAL ->
+                        case NORMAL -> {
                             company.addEmployee(emp);
+                            System.out.println("Added employee");
+                        }
                         case DRIVER -> {
                             emp = new Driver();
                             ((Driver)emp).setDistanceKms(new HashMap<String,Double>());
                             ((Driver)emp).setPricePerKm(new HashMap<String,Double>());
                             company.addEmployee(emp);
+                            System.out.println("Added employee");
                         }
                         case MANAGER -> {
                             emp = new Manager();
                             company.addEmployee(emp);
+                            System.out.println("Added employee");
                         }
                         case SALESMAN -> {
                             emp = new Salesman();
                             ((Salesman)emp).setAwardPercent(new HashMap<Integer,Double>());
                             ((Salesman)emp).setSales(new ArrayList<Sale>());
                             company.addEmployee(emp);
+                            System.out.println("Added employee");
                         }
                         default -> System.out.println("Invalid employee type.");
                     }

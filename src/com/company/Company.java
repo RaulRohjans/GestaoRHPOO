@@ -35,16 +35,15 @@ public class Company {
             object.put("Hourly pay: ", e.getHourlyPay());
             object.put("Type: ", e.getType());
             switch (e.getType()){
-                case NORMAL -> {
+                case NORMAL ->
                     array.put(object);
-                }
                 case DRIVER -> {
                     ((Driver)e).getDistanceKms();
                     ((Driver)e).getPricePerKm();
                     array.put(object);
                 }
                 case MANAGER -> {
-                    Manager.getAWARD();
+                    ((Manager)e).getAWARD();
                     array.put(object);
                 }
                 case SALESMAN -> {
@@ -58,7 +57,7 @@ public class Company {
         }
         //Create a new FileWriter object
         try {
-            FileWriter file = new FileWriter(File()+"/employees.json");
+            FileWriter file = new FileWriter(File());
             file.write(new JSONObject().put("Employees: ",array).toString());
             file.close();
         } catch (IOException e) {
@@ -71,8 +70,8 @@ public class Company {
         Scanner sc = new Scanner(System.in);
         System.out.println("Where you want to save the file?");
         String path = sc.nextLine();
-        if(path.isEmpty()) { System.out.println("C:"); }
-        return path;
+        if (path.isEmpty()) {return "C:\\employees.json";}
+        return path+"\\employees.json";
     }
 
     public void addEmployee(Employee employee) {
@@ -105,25 +104,25 @@ public class Company {
                 case 1:
                     for(Employee emp : employees){
                         if(emp.getType() == Employee.EmployeeType.NORMAL)
-                            System.out.println(emp);
+                            Methods.printEmployee(emp);
                     }
                     break;
                 case 2:
                     for(Employee emp : employees){
                         if(emp.getType() == Employee.EmployeeType.MANAGER)
-                            System.out.println(emp);
+                            Methods.printEmployee(emp);
                     }
                     break;
                 case 3:
                     for(Employee emp : employees){
                         if(emp.getType() == Employee.EmployeeType.DRIVER)
-                            System.out.println(emp);
+                            Methods.printEmployee(emp);
                     }
                     break;
                 case 4:
                     for(Employee emp : employees){
                         if(emp.getType() == Employee.EmployeeType.SALESMAN)
-                            System.out.println(emp);
+                            Methods.printEmployee(emp);
                     }
                     break;
                 default:
