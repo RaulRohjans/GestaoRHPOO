@@ -37,11 +37,12 @@ public class Main {
 
         do{
             opc = Methods.MainMenu();
-            switch (opc){
-                case 0: //Leave App
+            switch (opc) {
+                case 0 -> { //Leave App
                     System.out.println("Bye bye!");
                     return;
-                case 1: { //Insert New Employee
+                }
+                case 1 -> { //Insert New Employee
                     Employee emp = new Employee();
                     emp.setId(company.newEmployeeID());
                     System.out.println("Name: ");
@@ -58,8 +59,8 @@ public class Main {
                         }
                         case DRIVER -> {
                             emp = new Driver();
-                            ((Driver)emp).setDistanceKms(new HashMap<String,Double>());
-                            ((Driver)emp).setPricePerKm(new HashMap<String,Double>());
+                            ((Driver) emp).setDistanceKms(new HashMap<String, Double>());
+                            ((Driver) emp).setPricePerKm(new HashMap<String, Double>());
                             company.addEmployee(emp);
                             System.out.println("Added employee");
                         }
@@ -70,8 +71,8 @@ public class Main {
                         }
                         case SALESMAN -> {
                             emp = new Salesman();
-                            ((Salesman)emp).setAwardPercent(new HashMap<Integer,Double>());
-                            ((Salesman)emp).setSales(new ArrayList<Sale>());
+                            ((Salesman) emp).setAwardPercent(new HashMap<Integer, Double>());
+                            ((Salesman) emp).setSales(new ArrayList<Sale>());
                             company.addEmployee(emp);
                             System.out.println("Added employee");
                         }
@@ -85,35 +86,29 @@ public class Main {
                     emp.setEntranceDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateEntrance));
                     emp.setHourlyPay(hourly);
                     Methods.AwaitInput();
-                    break;
                 }
-                case 2: //Check for Employee
+                case 2 -> { //Check for Employee
                     System.out.print("Employee ID: ");
-
                     try {
-                        if(company.getEmployee(Integer.parseInt(scanner.nextLine())) != null)
+                        if (company.getEmployee(Integer.parseInt(scanner.nextLine())) != null)
                             System.out.println("This employee is in the system!");
                         else
                             System.out.println("This employee does not exist!");
-                    }
-                    catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("Invalid employee ID!");
                     }
-
                     Methods.AwaitInput();
-                    break;
-
-                case 3: //Get Employee Record
+                }
+                case 3 -> { //Get Employee Record
                     System.out.println("ID: ");
                     int id = scanner.nextInt();
                     Methods.printEmployee(company.getEmployee(id));
-                    break;
-
-                case 4: //Import Employee List
+                    Methods.AwaitInput();
+                }
+                case 4 -> { //Import Employee List
                     System.out.print("Importing files will delete all current data.\n" +
                             "Do you wish to proceed? (y/n) ");
-
-                    if(!scanner.nextLine().toUpperCase(Locale.ROOT).equals("Y")){
+                    if (!scanner.nextLine().toUpperCase(Locale.ROOT).equals("Y")) {
                         System.out.println("Action canceled.");
                         Methods.AwaitInput();
                     }
@@ -122,15 +117,13 @@ public class Main {
                     System.out.print("File Path: ");
                     File f;
                     String path = scanner.nextLine();
-
-                    if(path.isEmpty()){
+                    if (path.isEmpty()) {
                         System.out.println("Invalid file path!");
                         Methods.AwaitInput();
                         break;
                     }
-
                     f = new File(path);
-                    if(!f.exists()){
+                    if (!f.exists()) {
                         System.out.println("File does not exist");
                         Methods.AwaitInput();
                         break;
@@ -138,46 +131,42 @@ public class Main {
 
                     //Read file
                     JSONObject obj = null;
-                    try{
+                    try {
                         InputStream is = new FileInputStream(path);
                         String jsonTxt = IOUtils.toString(is, StandardCharsets.ISO_8859_1);
                         obj = new JSONObject(jsonTxt);
-                    }
-                    catch (IOException e){
+                    } catch (IOException e) {
                         System.out.println("File does not exist");
                         Methods.AwaitInput();
                         break;
                     }
 
                     //Insert Employees
-                    try{
+                    try {
                         JSONArray employees = obj.getJSONArray("employees");
                         company.deleteEmployees();
-                        for(int i = 0; i < employees.length(); i++ ){
+                        for (int i = 0; i < employees.length(); i++) {
                             Employee employee = Methods.GetEmployeeFromJSON(employees.getJSONObject(i));
-                            if(employee == null)
+                            if (employee == null)
                                 throw new NullPointerException("Could not read employee, there has been an error parsing the file.\n" +
                                         "Make sure the employee types are correct.");
                             company.addEmployee(employee);
                         }
-                    }
-                    catch (ParseException | NumberFormatException e){
+                    } catch (ParseException | NumberFormatException e) {
                         System.out.println(e.getMessage());
                         Methods.AwaitInput();
                         break;
-                    }
-                    catch (Exception e){
+                    } catch (Exception e) {
                         System.out.println("The following unknown error has occurred: \n" + e.getMessage());
                         Methods.AwaitInput();
                         break;
                     }
-
                     Methods.AwaitInput();
-                    break;
-                case 5: { //Get Employee Number per Category
+                }
+                case 5 -> { //Get Employee Number per Category
                     Employee.EmployeeType category = Methods.CategoryMenu();
 
-                    if(category == Employee.EmployeeType.NULL){
+                    if (category == Employee.EmployeeType.NULL) {
                         System.out.println("Invalid Category!");
                         Methods.AwaitInput();
                         break;
@@ -186,35 +175,32 @@ public class Main {
                     System.out.println("There are " + company.employeeCountPerCategory(category) +
                             " employees in that category!");
                     Methods.AwaitInput();
-                    break;
                 }
-                case 6: //Get all Employees
+                case 6 -> { //Get all Employees
                     System.out.flush();
                     company.showAllEmployees();
                     Methods.AwaitInput();
-                    break;
-                case 7: //Get All Employees per Category
+                }
+                case 7 -> { //Get All Employees per Category
                     System.out.flush();
                     company.showEmployeePerCategory();
                     Methods.AwaitInput();
-                    break;
-                case 8: //Calculate Total Paychecks to Pay
+                }
+                case 8 -> { //Calculate Total Paychecks to Pay
                     double totalToPay = 0;
-                    for(Employee emp: company.Employees()){
+                    for (Employee emp : company.Employees()) {
                         totalToPay = emp.calcPaycheck();
                     }
-
                     System.out.flush();
                     System.out.println("Total due this month: " + totalToPay);
                     Methods.AwaitInput();
-                    break;
-                case 9: //Calculate All Costs
+                }
+                case 9 -> { //Calculate All Costs
                     System.out.print("Year: ");
-
-                    try{
+                    try {
                         int year = Integer.parseInt(scanner.nextLine());
 
-                        if(year < 1){
+                        if (year < 1) {
                             System.out.println("Year is invalid.");
                             Methods.AwaitInput();
                             break;
@@ -222,22 +208,19 @@ public class Main {
 
                         System.out.flush();
                         company.showAllCosts(year);
-                    }
-                    catch (NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("Year is invalid.");
                     }
-
                     Methods.AwaitInput();
-                    break;
-                case 10: //Export User List
+                }
+                case 10 -> { //Export User List
                     company.exportFile();
                     Methods.AwaitInput();
-                    break;
-
-                default:
+                }
+                default -> {
                     System.out.println("Error: Invalid option!");
                     Methods.AwaitInput();
-                    break;
+                }
             }
         }while (opc != 0);
 
