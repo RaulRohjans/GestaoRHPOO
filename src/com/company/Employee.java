@@ -7,6 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Employee {
@@ -19,7 +22,6 @@ public class Employee {
 
     public enum EmployeeType {NORMAL, MANAGER, DRIVER, SALESMAN, NULL}
 
-    ;
     private EmployeeType type;
 
     private final static double DAILY_FOOD_SUBSIDY = 4.79;
@@ -50,35 +52,19 @@ public class Employee {
         workedDays.put(d, days);
     }
 
-
-
-    public void addWorkedDays(int days) {
-        Calendar calendar = Calendar.getInstance();
-        workedDays.put(String.valueOf(calendar.get(Calendar.YEAR) + "-" + String.valueOf(calendar.get(Calendar.MONTH)) + 1), days);
-    }
-
-
-    /*public double getBasePay() {
-        return workedDays * (hourlyPay * 8);
-    }
-
-    public double getExtraPay() {
-        return workedDays * DAILY_FOOD_SUBSIDY;
-    }
-
-    public double getFullPay() {
-        return getBasePay() + getExtraPay();
-    }*/
     public double calcPaycheck() {
-        double total = 0;
-
         if (workedDays.size() < 1)
             return 0;
+
+        //Calculate Yearly Extra Percentage
+        Duration diff = Duration.between(Calendar.getInstance().toInstant(), entranceDate.toInstant());
+        int years = (int) (diff.toDays() / 365);
+        double percentage = years * 0.5;
 
         int days = workedDays.get(Calendar.getInstance().get(Calendar.YEAR) + "-" +
                 Methods.getFormattedMonth());
 
-        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY) + ((days * 8) * hourlyPay) * percentage;
     }
 
     public double calcTrimesterPaycheck(int year) {
@@ -97,13 +83,18 @@ public class Employee {
             }
         }
 
-        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+        //Calculate Yearly Extra Percentage
+        Duration diff = Duration.between(Calendar.getInstance().toInstant(), entranceDate.toInstant());
+        int years = (int) (diff.toDays() / 365);
+        double percentage = years * 0.5;
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY) + ((days * 8) * hourlyPay) * percentage;
 
         //Do an average if worked more than 3 months that year
         if (monthCount >= 3)
-            return (yearTotal / monthCount) * 3;
+            return (yearTotal / monthCount) * 3 + (yearTotal / monthCount) * 2/4;
         else
-            return yearTotal;
+            return yearTotal + (yearTotal / monthCount) * 2;
     }
 
     public double calcSemesterPaycheck(int year) {
@@ -122,13 +113,18 @@ public class Employee {
             }
         }
 
-        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+        //Calculate Yearly Extra Percentage
+        Duration diff = Duration.between(Calendar.getInstance().toInstant(), entranceDate.toInstant());
+        int years = (int) (diff.toDays() / 365);
+        double percentage = years * 0.5;
+
+        yearTotal = ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY) + ((days * 8) * hourlyPay) * percentage;
 
         //Do an average if worked more than 6 months that year
         if (monthCount >= 6)
-            return (yearTotal / monthCount) * 6;
+            return (yearTotal / monthCount) * 6 + (yearTotal / monthCount);
         else
-            return yearTotal;
+            return yearTotal + (yearTotal / monthCount) * 2;
     }
 
     public double calcYearPaycheck(int year) {
@@ -143,7 +139,13 @@ public class Employee {
                 days += workedDays.get(key);
             }
         }
-        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY);
+
+        //Calculate Yearly Extra Percentage
+        Duration diff = Duration.between(Calendar.getInstance().toInstant(), entranceDate.toInstant());
+        int years = (int) (diff.toDays() / 365);
+        double percentage = years * 0.5;
+
+        return ((days * 8) * hourlyPay) + (days * DAILY_FOOD_SUBSIDY) + (((days * 8) * hourlyPay) / 12) * 2 + ((days * 8) * hourlyPay) * percentage;
     }
 
 

@@ -37,15 +37,6 @@ public class Salesman extends Employee{
         sales.add(sale);
     }
 
-    public void addSale(double total, Date saleDate) {
-        if(total < 0 || saleDate.after(new Date())){
-            System.out.println("Invalid sale information.");
-            return;
-        }
-
-        sales.add(new Sale(sales.get(sales.size()-1).getId() + 1, total, saleDate));
-    }
-
     public void addAwardPec(int year, double percent){
         if(year < 1000 || percent < 0)
             throw new IllegalArgumentException("Invalid award percent arguments.");
