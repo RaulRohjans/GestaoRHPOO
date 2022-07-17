@@ -3,6 +3,7 @@ package com.company;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -45,16 +46,10 @@ public class Main {
                     emp.setId(company.newEmployeeID());
                     System.out.println("Name: ");
                     String name = scanner.nextLine();
-                    if (name.isEmpty()) {
-                        System.out.println("This is an empty or null data");
-                    } else {
-                        emp.setName(name);
-                    }
                     System.out.println("Entrance Date (yyyy-mm-dd): ");
                     String dateEntrance = scanner.nextLine();
-                    emp.setEntranceDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateEntrance));
                     System.out.println("Hourly Pay: ");
-                    emp.setHourlyPay(scanner.nextDouble());
+                    double hourly = scanner.nextDouble();
 
                     switch (Methods.CategoryMenu()) {
                         case NORMAL -> {
@@ -82,6 +77,13 @@ public class Main {
                         }
                         default -> System.out.println("Invalid employee type.");
                     }
+                    if (name.isEmpty()) {
+                        System.out.println("This is an empty or null data");
+                    } else {
+                        emp.setName(name);
+                    }
+                    emp.setEntranceDate(new SimpleDateFormat("yyyy-MM-dd").parse(dateEntrance));
+                    emp.setHourlyPay(hourly);
                     Methods.AwaitInput();
                     break;
                 }
@@ -102,8 +104,9 @@ public class Main {
                     break;
 
                 case 3: //Get Employee Record
-                    //company.getEmployee();
-                    Methods.AwaitInput();
+                    System.out.println("ID: ");
+                    int id = scanner.nextInt();
+                    Methods.printEmployee(company.getEmployee(id));
                     break;
 
                 case 4: //Import Employee List
