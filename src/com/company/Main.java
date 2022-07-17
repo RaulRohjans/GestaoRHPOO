@@ -227,52 +227,6 @@ public class Main {
                     Methods.AwaitInput();
                     break;
                 case 10: //Export User List
-
-                    /* File Structure
-                    {
-                        employees : [
-                            {
-                                id: 1,
-                                name: Raul,
-                                entranceDate: 2022-08-12,
-                                "workedDays": {
-                                    "2022-02": 58,
-                                    "2022-03": 59
-                                },
-                                hourlyPay: 5.5,
-                                type: 0
-                            },
-                            {
-                                id: 2,
-                                name: Fran,
-                                entranceDate: 2022-02-12,
-                                "workedDays": {
-                                    "2022-02": 58,
-                                    "2022-03": 59
-                                },
-                                hourlyPay: 7.5,
-                                type: 3,
-                                awardPercent: {
-                                    2021: 0.25,
-                                    2022: 0.5
-                                },
-                                sales: [
-                                    {
-                                        id: 1,
-                                        total: 59.9,
-                                        saleDate: 2021-08-09
-                                    },
-                                    {
-                                        id: 2,
-                                        total: 41.9,
-                                        saleDate: 2022-02-15
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                     */
-
                     company.exportFile();
                     Methods.AwaitInput();
                     break;
